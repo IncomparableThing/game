@@ -1,0 +1,104 @@
+html,body{
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+}
+body{
+	background: url('../img/desk.png');
+}
+/* 6个牌的区域 */
+#desk{
+	margin: 0 auto;
+	width: 78%;
+	height: 85%;
+	position: relative;
+	/* background-color: white;/*  */ */
+}
+/* 单张牌区域 */
+.card{
+	width: 17%;
+	height: 39%;
+	/* background-color: blue;/*  */ */
+	margin-left: 12%;
+	margin-top: 3%;
+	margin-bottom: 10px;
+	float: left;
+	border-radius: 8%;
+	position: relative;
+}
+/* 每张牌都有两面 */
+.front,.back{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: 8%;
+	transition: all 0.3s;
+	backface-visibility: hidden;
+	/* 旋转以后背面可见性：不可见 */
+}
+.front{
+	background: url('../img/deckfront.png') no-repeat;
+	background-size: 100% 100%;
+	z-index: 10;
+}
+.back{
+	z-index: 18;
+	transform: rotateY(-180deg);
+}
+.card-flipped .back{
+	z-index: 10;
+	transform: rotateY(0deg);
+}
+.card-flipped .front{
+	z-index: 8;
+	transform: rotateY(180deg);
+}
+.deck_rj{
+	background: url('../img/deck_rj.png') no-repeat;
+	background-size: 100% 100%;
+}
+.deck_rq{
+	background: url('../img/deck_rq.png') no-repeat;
+	background-size: 100% 100%;
+}
+.deck_rk{
+	background: url('../img/deck_rk.png') no-repeat;
+	background-size: 100% 100%;
+}
+.card_remove{
+	opacity: 0;
+}
+/* 0423 */
+.button_area{
+			margin: 0 auto;
+			text-align: center;
+		}
+		button#oncemore{
+			height: 34px;
+			width:250px;
+			border: 1px solid #858fa6;
+			background: #4a5775;
+			border-radius: 5px;
+			box-shadow: 0px 0px 5px #000;
+			color: #fff;
+			text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.75);
+			font-size: 25px;
+			margin: 10px auto;
+			/* background: linear-gradient(); */
+			display: none;
+		}
+		#result{
+			color: #fff;
+			font-size: 35px;
+			position: absolute;
+			bottom: 40%;
+			text-align: center;
+			margin: 0 auto;
+			left: 27%;
+			transition: all 0.5s;
+			opacity: 0;
+		}
+		#desk .showresult{
+			opacity: 1;
+		}

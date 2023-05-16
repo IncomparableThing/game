@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link href="css/style.css" rel="stylesheet" />
+		<script src="jquery-3.6.0.min.js"></script>
+	</head>
+	<body>
+		<div id="desk">
+			<!-- 牌面区域 -->
+			<div class="card">
+				<!-- 正面 -->
+				<div class="front"></div>
+				<!-- 反面 -->
+				<div class="back"></div>
+			</div>
+			<!-- 按钮区域 -->
+			<div class="button_area">
+				<button id="oncemore">Play Again</button>
+			</div>
+			<!-- 成绩区域 -->
+			<div id="result"></div>
+		</div>
+		
+		<script>
+			// 全局变量
+			var deck = ['deck_rj','deck_rj','deck_rq','deck_rq','deck_rk','deck_rk'];
+			var $oncemoreButton = $('#oncemore');
+			var $result = $('#result');
+			var interId;
+			var rightCount;
+			var time = 0;
+			
+			
+			//洗牌
+			function shuffle(){
+				return Math.random()>0.5?-1:1;
+				
+			}
+			function dealTime(){
+				var res = null;
+				if(time<60){
+					if(time<10){
+						time = '0'+time;
+					}
+					res = '00:'+time;
+					
+				}
+				return res;
+			}
+			
+			// 计时函数
+			function calculate(){
+				time += 1;
+			}
+			//翻牌函数
+			function selectCard(){
+				// 阻止翻开第三张牌
+				if($('.card-flipped').length>1){
+					return;
+				}
+				
+				$(this).addClass('card-flipped');
+				var $fcards = $('.card-flipped');
+				if($fcards.length==2){
+					setTimeout(function(){
+						checkPattern($fcards);
+					},1000);
+				}
+			}
+			
+			// 检测是否匹配函数
+			function checkPattern($cards){
+				var pattern1 = $($cards[0]).data('pattern');
+				var pattern2 = $($cards[1]).data('pattern');
+				if(pattern1==pattern2){
+					$cards.addClass('card_remove');
+					rightCount++;
+					if(rightCount==3){
+						clearInterval(interId);
+						$oncemoreButton.show();
+						$result.text('你的成绩'+dealTime()).addClass('showresult');
+					}
+				}
+				$cards.removeClass('card-flipped');
+			}
+			// 开始游戏函数
+			function startPlay(){
+				time = 0;
+				$result.removeClass('showresult');
+				$oncemoreButton.hide();
+				rightCount=0;
+				
+				// 随机发牌
+				deck.sort(shuffle);
+				var $card = $('.card');
+				$card.removeClass('card_remove');
+				$card.find('.back').removeClass().addClass('back');
+				$card.each(function(index){
+					var pattern = deck[index];
+					$(this).data('pattern',pattern);
+					$(this).find('.back').addClass(pattern);
+					// $(this).click(function(){
+					// 	selectCard();
+					// });
+					$(this).click(selectCard);
+				});
+			}
+			//ready
+			$(function(){
+				var $card = $('.card');
+				for(var i=0;i<5;i++){
+					$card.clone().insertAfter($card);
+				}
+				startPlay();
+				$oncemoreButton.click(function(){
+					startPlay();
+				})
+			})
+			
+		</script>
+		
+	</body>
+</html>
